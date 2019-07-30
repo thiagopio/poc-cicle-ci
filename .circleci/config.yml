@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run:
           name: Test
-          command: echo Running tests to $CIRCLE_BRANCH
+          command: echo Running tests to "${CIRCLE_BRANCH}"
   deploy_staging:
     executor: cicle_ci
     steps:
