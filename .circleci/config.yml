@@ -74,7 +74,7 @@ workflows:
               ignore: /.*/
             tags:
               only: /^\d+\.\d+\.\d+\z/
-      - hold-staging:
+      - hold:
           type: approval
           filters:
             branches:
@@ -90,8 +90,8 @@ workflows:
             tags:
               only: /^\d+\.\d+\.\d+\z/
           requires:
-            - hold-staging
-      - hold-prodution:
+            - hold
+      - hold-prod:
           type: approval
           filters:
             branches:
@@ -107,4 +107,4 @@ workflows:
             tags:
               only: /^\d+\.\d+\.\d+\z/
           requires:
-            - hold-prodution
+            - hold-prod
