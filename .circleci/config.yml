@@ -19,5 +19,6 @@ workflows:
   development:
     jobs:
       - build:
+          filters:
             tags:
               ignore: /.*/
