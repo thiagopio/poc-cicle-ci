@@ -3,7 +3,7 @@ executors:
   cicle_ci:
     working_directory: ~/poc-cicle-ci
     docker:
-      - image: debian:stretch
+      - image: circleci/cci-demo-docker-primary:0.0.2
 jobs:
   build:
     executor: cicle_ci
@@ -32,15 +32,6 @@ workflows:
   general:
     jobs:
       - build:
-          pre-steps:
-            - run:
-                name: "Install git and SSH client"
-                command: |
-                  apk add \ 
-                      --update \
-                      --no-progress \
-                      git \ 
-                      openssh-client
           filters:
             tags:
               ignore: /.*/
