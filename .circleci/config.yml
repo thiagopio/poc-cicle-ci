@@ -1,4 +1,15 @@
 version: 2.1
+commands:
+  deploy:
+    parameters:
+      to:
+        type: string
+      source:
+        type: string
+    steps:
+      - run:
+          name: Deploy
+          command: echo deploying to << parameters.to >> SOURCE=<< parameters.source >>
 executors:
   cicle_ci:
     working_directory: ~/poc-cicle-ci
@@ -14,18 +25,21 @@ jobs:
           command: echo Running tests to "${CIRCLE_BRANCH}" or "${CIRCLE_TAG}"
   deploy_staging:
     executor: cicle_ci
+    parameters:
+      source:
+        type: string
     steps:
       - checkout
-      - run:
-          name: deploying
-          command: echo Sending code to staging
+      - deploy:
+          to: staging
+          source: "${CIRCLE_TAG}"
   deploy_production:
     executor: cicle_ci
     steps:
       - checkout
-      - run:
-          name: deploying
-          command: echo Sending code to production
+      - deploy:
+          to: production
+          source: "${CIRCLE_TAG}"
 
 workflows:
   version: 2
