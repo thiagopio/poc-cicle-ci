@@ -46,6 +46,19 @@ workflows:
           filters:
             tags:
               ignore: /.*/
+      - hold-staging:
+          type: approval
+          filters:
+            tags:
+              ignore: /.*/
+          requires:
+            - build
+      - deploy_staging:
+          filters:
+            tags:
+              ignore: /.*/
+          requires:
+            - hold-staging
   deploy-tag:
     jobs:
       - build:
