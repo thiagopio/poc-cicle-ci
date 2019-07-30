@@ -25,9 +25,6 @@ jobs:
           command: echo Running tests to "${CIRCLE_BRANCH}" or "${CIRCLE_TAG}"
   deploy_staging:
     executor: cicle_ci
-    parameters:
-      source:
-        type: string
     steps:
       - checkout
       - deploy:
