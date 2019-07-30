@@ -23,14 +23,21 @@ jobs:
       - run:
           name: Test
           command: echo Running tests to "${CIRCLE_BRANCH}" or "${CIRCLE_TAG}"
-  deploy_staging:
+  deploy_staging_branch:
+    executor: cicle_ci
+    steps:
+      - checkout
+      - deploy:
+          to: staging
+          source: "${CIRCLE_BRANCH}"
+  deploy_staging_tag:
     executor: cicle_ci
     steps:
       - checkout
       - deploy:
           to: staging
           source: "${CIRCLE_TAG}"
-  deploy_production:
+  deploy_production_tag:
     executor: cicle_ci
     steps:
       - checkout
@@ -53,7 +60,7 @@ workflows:
               ignore: /.*/
           requires:
             - build
-      - deploy_staging:
+      - deploy_staging_branch:
           filters:
             tags:
               ignore: /.*/
@@ -76,7 +83,7 @@ workflows:
               only: /^\d+\.\d+\.\d+\z/
           requires:
             - build
-      - deploy_staging:
+      - deploy_staging_tag:
           filters:
             branches:
               ignore: /.*/
@@ -93,7 +100,7 @@ workflows:
               only: /^\d+\.\d+\.\d+\z/
           requires:
             - build
-      - deploy_production:
+      - deploy_production_tag:
           filters:
             branches:
               ignore: /.*/
