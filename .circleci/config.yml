@@ -11,14 +11,21 @@ jobs:
       - checkout
       - run:
           name: Test
-          command: echo Running tests
+          command: echo Running tests to $CIRCLE_BRANCH
   deploy_staging:
     executor: cicle_ci
     steps:
       - checkout
       - run:
           name: deploying
-          command: echo Sending code to somewhere
+          command: echo Sending code to staging
+  deploy_production:
+    executor: cicle_ci
+    steps:
+      - checkout
+      - run:
+          name: deploying
+          command: echo Sending code to production
 
 workflows:
   version: 2
@@ -36,7 +43,7 @@ workflows:
               ignore: /.*/
             tags:
               only: /^\d+\.\d+\.\d+\z/
-      - hold:
+      - hold-staging:
           type: approval
           filters:
             branches:
@@ -52,4 +59,21 @@ workflows:
             tags:
               only: /^\d+\.\d+\.\d+\z/
           requires:
-            - hold
+            - hold-staging
+      - hold-prodution:
+          type: approval
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+\z/
+          requires:
+            - build
+      - deploy_production:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+\z/
+          requires:
+            - hold-prodution
