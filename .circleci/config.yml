@@ -99,7 +99,7 @@ workflows:
             tags:
               only: /^\d+\.\d+\.\d+\z/
           requires:
-            - build
+            - deploy_staging_tag
       - deploy_production_tag:
           filters:
             branches:
