@@ -4,8 +4,6 @@ jobs:
     executor: cicle_ci
     docker:
       - image: debian:stretch
-  test:
-    executor: cicle_ci
     steps:
       - checkout
       - run:
@@ -20,10 +18,6 @@ workflows:
           filters:
             tags:
               ignore: /.*/
-      - test:
-          filters:
-            tags:
-              ignore: /.*/
   deploy-tag:
     jobs:
       - build:
@@ -32,14 +26,6 @@ workflows:
               ignore: /.*/
             tags:
               only: /^\d+\.\d+\.\d+\z/
-      - test:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^\d+\.\d+\.\d+\z/
-            requires:
-            - build
       - hold:
           type: approval
           filters:
