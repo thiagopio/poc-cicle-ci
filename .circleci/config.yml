@@ -1,13 +1,5 @@
-version: 2
+version: 2.1
 jobs:
-  deploy_production:
-    steps:
-      - checkout
-
-      - run:
-          name: Tag
-          command: echo Only Tags
-
   build:
     docker:
       - image: debian:stretch
@@ -29,11 +21,3 @@ workflows:
       - build:
             tags:
               ignore: /.*/
-  deploy-production:
-    jobs:
-      - build:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^\d+\.\d+\.\d+\z/
