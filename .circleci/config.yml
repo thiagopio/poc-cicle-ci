@@ -16,9 +16,17 @@ jobs:
           command: date
 workflows:
   version: 2
-  development:
+  general:
     jobs:
       - build:
           filters:
             tags:
               ignore: /.*/
+  deploy-tag:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+\z/
