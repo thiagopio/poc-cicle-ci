@@ -1,24 +1,26 @@
 version: 2.1
 jobs:
   build:
+    executor: cicle_ci
     docker:
       - image: debian:stretch
-
+  test:
+    executor: cicle_ci
     steps:
       - checkout
-
       - run:
-          name: Greeting
-          command: echo Hello, world.
+          name: Test
+          command: echo Running tests
 
-      - run:
-          name: Print the Current Time
-          command: date
 workflows:
   version: 2
   general:
     jobs:
       - build:
+          filters:
+            tags:
+              ignore: /.*/
+      - test:
           filters:
             tags:
               ignore: /.*/
@@ -30,3 +32,28 @@ workflows:
               ignore: /.*/
             tags:
               only: /^\d+\.\d+\.\d+\z/
+      - test:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+\z/
+            requires:
+            - build
+      - hold:
+          type: approval
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+\z/
+          requires:
+            - test
+      - deploy_staging:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+\z/
+          requires:
+            - hold
