@@ -1,9 +1,12 @@
 version: 2.1
+executors:
+  cicle_ci:
+    working_directory: ~/poc-cicle-ci
+    docker:
+      - image: debian:stretch
 jobs:
   build:
     executor: cicle_ci
-    docker:
-      - image: debian:stretch
     steps:
       - checkout
       - run:
