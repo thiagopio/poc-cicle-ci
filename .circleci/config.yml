@@ -34,7 +34,7 @@ workflows:
             tags:
               only: /^\d+\.\d+\.\d+\z/
           requires:
-            - test
+            - build
       - deploy_staging:
           filters:
             branches:
