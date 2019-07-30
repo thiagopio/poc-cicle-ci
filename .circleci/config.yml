@@ -12,6 +12,13 @@ jobs:
       - run:
           name: Test
           command: echo Running tests
+  deploy_staging:
+    executor: cicle_ci
+    steps:
+      - checkout
+      - run:
+          name: deploying
+          command: echo Sending code to somewhere
 
 workflows:
   version: 2
